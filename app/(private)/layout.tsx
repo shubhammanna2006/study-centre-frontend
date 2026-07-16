@@ -10,17 +10,17 @@ const layout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { isAuthenticated ,isLoading} = useAppSelector((state) => state.auth);
+  // const { isAuthenticated ,isLoading} = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      redirect("/");
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     redirect("/");
+  //   }
+  // }, [isAuthenticated]);
 
-   if (isLoading) {
-    return <Loader />; // blocking render
-  }
+  //  if (isLoading) {
+  //   return <Loader />; // blocking render
+  // }
 
   return <>{children}</>;
 };

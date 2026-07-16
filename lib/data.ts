@@ -98,3 +98,8 @@ export const faqs = [
   { q: "Can I attend a demo class?", a: "Yes. Book a free demo class from the Contact page or WhatsApp us directly." },
   { q: "Do you offer weekend batches?", a: "Yes, we run morning, evening and weekend batches for working professionals." },
 ];
+export const students =  [
+    { studentId: "STU001", name: "Rohit Singh", course: "Web Development", email: "rohit.singh@example.com" },
+    { studentId: "STU002", name: "Priya Sharma", course: "Data Science", email: "priya.sharma@example.com" },
+    { studentId: "STU003", name: "Amit Kumar", course: "Digital Marketing", email: "amit.kumar@example.com" },
+  ];

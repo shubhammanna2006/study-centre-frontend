@@ -103,3 +103,9 @@ export const students =  [
     { studentId: "STU002", name: "Priya Sharma", course: "Data Science", email: "priya.sharma@example.com" },
     { studentId: "STU003", name: "Amit Kumar", course: "Digital Marketing", email: "amit.kumar@example.com" },
   ];
+
+  export const notifications = [
+    { id: 1, type: "Exam", title: "Midterm Exam Schedule", message: "The midterm exams will be held from 15th to 20th March. Please check the notice board for details.", date: "2026-03-10" },
+    { id: 2, type: "Event", title: "Annual Function", message: "Join us for the annual function on 25th March at the main auditorium. All students are encouraged to participate.", date: "2026-03-12" },
+    { id: 3, type: "Urgent", title: "System Maintenance", message: "The computer lab will be closed for maintenance on 18th March. Please plan your work accordingly.", date: "2026-03-14" },
+  ];

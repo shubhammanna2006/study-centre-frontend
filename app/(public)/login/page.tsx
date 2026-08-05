@@ -17,6 +17,7 @@ export default function LoginPage() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO(backend): call /api/auth/login with JWT
+    
     toast.success(`Signed in as ${tab} (mock)`);
     setTimeout(() => {
       window.location.href = tab === "admin" ? "/admin" : "/student";

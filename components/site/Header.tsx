@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X, Moon, Sun, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -49,9 +50,9 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="grid h-10 w-10 place-items-center rounded-xl gradient-primary shadow-elegant group-hover:scale-105 transition-transform">
-            <GraduationCap className="h-5 w-5 text-primary-foreground" />
-          </div>
+          {/* <div className="grid h-10 w-10  rounded-xl gradient-primary shadow-elegant group-hover:scale-105 transition-transform"> */}
+            <Image src={"/assets/logo/studycentrelogo.png"} alt="Study Centre Logo" width={48} height={48} />
+          {/* </div> */}
           <div className="flex flex-col leading-none">
             <span className="font-display text-lg font-bold tracking-tight">Study Centre</span>
             <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Learn · Lead</span>

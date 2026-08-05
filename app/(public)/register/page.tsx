@@ -13,6 +13,7 @@ import { courses } from "@/lib/data";
 import { toast } from "sonner";
 import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
+import api from "@/api/api";
 
 const schema = z.object({
   fullName: z.string().trim().min(2).max(80),
@@ -45,13 +46,14 @@ export default function RegisterPage() {
       toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
       return;
     }
-    setBusy(true);
-    setTimeout(() => {
-      setBusy(false);
-      setDone(true);
-      // TODO(backend): POST to /api/students; send confirmation email via Nodemailer
-      toast.success("Registration submitted — status: Pending");
-    }, 900);
+    api.post("/api/v1/auth/register", fd)
+    // setBusy(true);
+    // setTimeout(() => {
+    //   setBusy(false);
+    //   setDone(true);
+    //   // TODO(backend): POST to /api/students; send confirmation email via Nodemailer
+    //   toast.success("Registration submitted — status: Pending");
+    // }, 900);
   };
 
   if (done) {

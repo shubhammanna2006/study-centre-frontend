@@ -12,10 +12,10 @@ import Students from "./Students";
 import Faculty from "./Faculty";
 import Admissions from "./Admissions";
 import Courses from "./Courses";
-import { Gallery } from "./Gallery";
 import { Certificates } from "./Certificates";
-import { Fees } from "./Fees";
-import { Notifications } from "./Notifications";
+import FeeManagementPage from "./Fees";
+import GalleryPage from "./Gallery";
+import Notifications from "./Notifications";
 
 const nav = [
   { icon: LayoutDashboard, label: "Dashboard" },
@@ -69,9 +69,9 @@ export default function AdminDashboard() {
       {active === "Faculty" && <Faculty />}
       {active === "Admissions" && <Admissions />}
       {active === "Courses" && <Courses />}
-      {active === "Gallery" && <Gallery />}
+      {active === "Gallery" && <GalleryPage />}
       {active === "Certificates" && <Certificates />}
-      {active === "Fees" && <Fees />}
+      {active === "Fees" && <FeeManagementPage />}
       {active === "Notifications" && <Notifications />}
     </div>
   );

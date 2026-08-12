@@ -46,15 +46,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <div className="min-h-screen flex flex-col">
-          {/* <Providers>
-            <AuthProvider> */}
+          <Providers>
+            <AuthProvider>
               <Header />
               <main className="flex-1 pt-16">{children}</main>
               <Footer />
               <WhatsAppFab />
               <Toaster richColors position="top-right" />
-           {/* </AuthProvider>
-          </Providers> */}
+           </AuthProvider>
+          </Providers> 
         </div>
       </body>
     </html>

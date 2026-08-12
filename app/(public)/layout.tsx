@@ -10,15 +10,15 @@ const layout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { isAuthenticated, isLoading } = useAppSelector(
+  const { isAuthenticated, isLoading, role } = useAppSelector(
     (state) => state.auth,
   );
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      redirect("/");
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     role === "ADMIN" ? redirect("/admin/dashboard") : redirect("/student");
+  //   }
+  // }, [isAuthenticated]);
 
   if (isLoading) {
     return <Loader />; // blocking render

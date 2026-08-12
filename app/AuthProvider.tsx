@@ -17,10 +17,17 @@ export default function AuthProvider({
   useEffect(() => {
     const restoreAuth = async () => {
       try {
-        const res = await api.post("/auth/refresh");
-        dispatch(
-          setCredentials({ user: res.data.user, accessToken: res.data.token })
+        const res = await api.post("api/v1/auth/refresh");
+        if (res.status===200) {
+          dispatch(
+          setCredentials({
+            user: res.data.profile,
+            accessToken: res.data.token,
+            role: res.data.role,
+          }),
         );
+        
+        }
       } catch {
         dispatch(clearAuth());
       }

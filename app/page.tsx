@@ -45,7 +45,7 @@ export default function Home() {
             </Badge>
             <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05]">
               Learn Today,<br />
-              <span className="bg-gradient-to-r from-orange-300 to-amber-200 bg-clip-text text-transparent">Lead Tomorrow.</span>
+              <span className="bg-linear-to-r from-orange-300 to-amber-200 bg-clip-text text-transparent">Lead Tomorrow.</span>
             </h1>
             <p className="mt-5 text-lg text-white/85 max-w-xl">
               Government-recognized computer courses with real-world labs, expert faculty and placement assistance. Build the career you deserve at <strong className="text-white">Study Centre</strong>.

@@ -30,25 +30,22 @@ import {
 import { toast } from "sonner";
 
 import type {
-  StudentSummary,
   StudentStats,
-  StudentStatus,
+  AdmitCardSummary,
 } from "@/interfaces/interface";
 import { EditStudentDialog } from "@/components/admin/Editstudentdialog";
+import { GenerateAdmintCard } from "@/components/admin/GenerateAdmintCard";
 import { ViewStudentDialog } from "@/components/admin/Viewstudentdialog";
 import api from "@/api/api";
 
 const PAGE_SIZE = 10;
 
 const Students = () => {
-  const [rows, setRows] = useState<StudentSummary[]>([]);
+  const [rows, setRows] = useState<AdmitCardSummary[]>([]);
   const [stats, setStats] = useState<StudentStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<StudentStatus | "ALL">(
-    "ALL",
-  );
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -68,8 +65,6 @@ const Students = () => {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      // fixed: was hitting /admission-details (the registrations endpoint) — students
-      // have their own endpoint now that they've actually been admitted
       const params = new URLSearchParams({
       page: page.toString(),
       size: PAGE_SIZE.toString(),
@@ -77,11 +72,7 @@ const Students = () => {
       if (debouncedSearch.trim()) {
         params.append("search", debouncedSearch.trim());
       }
-
-      if (statusFilter !== "ALL") {
-        params.append("status", statusFilter);
-      }
-      const res = await api.get(`/api/v1/admin/student?${params.toString()}`);
+      const res = await api.get(`/api/v1/admin/admit-cards?${params.toString()}`);
       if (res.status === 200) {
         setRows(res.data?.results);
         setTotalPages(res.data?.totalPages);
@@ -93,7 +84,7 @@ const Students = () => {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, statusFilter, page]);
+  }, [debouncedSearch, page]);
 
   const loadStats = useCallback(async () => {
     try {
@@ -114,7 +105,7 @@ const Students = () => {
 
   useEffect(() => {
     setPage(0);
-  }, [debouncedSearch, statusFilter]);
+  }, [debouncedSearch]);
 
   const refreshAfterChange = () => {
     load();
@@ -161,7 +152,7 @@ const Students = () => {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <Badge variant="secondary">Students</Badge>
-          <h1 className="mt-2 text-3xl font-bold">Student Management</h1>
+          <h1 className="mt-2 text-3xl font-bold">Admit Card Management</h1>
         </div>
 
         <div className="flex gap-2">
@@ -180,26 +171,9 @@ const Students = () => {
             onClick={() => setNewOpen(true)}
           >
             <Plus className="mr-2 h-4 w-4" />
-            Add Student
+            Generate Admit Card
           </Button>
         </div>
-      </div>
-
-      {/* Status filter tabs */}
-      <div className="flex gap-2 mt-4">
-        {(["ALL", "ACTIVE", "INACTIVE", "COMPLETED"] as const).map((s) => (
-          <button
-            key={s}
-            onClick={() => setStatusFilter(s)}
-            className={`px-3 py-1.5 rounded-full text-sm border transition ${
-              statusFilter === s
-                ? "gradient-primary text-primary-foreground border-transparent"
-                : "border-border hover:bg-secondary"
-            }`}
-          >
-            {s === "ALL" ? "All" : s.charAt(0) + s.slice(1).toLowerCase()}
-          </button>
-        ))}
       </div>
 
       {/* Statistics */}
@@ -269,10 +243,10 @@ const Students = () => {
                 <TableRow>
                   <TableHead>ID</TableHead>
                   <TableHead>Name</TableHead>
-                  <TableHead>Course</TableHead>
+                  <TableHead>Exam Place</TableHead>
                   <TableHead>Phone</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Joined</TableHead>
+                  <TableHead>Exam Time</TableHead>
+                  <TableHead>Exam Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -303,38 +277,28 @@ const Students = () => {
                 {!loading &&
                   rows.map((student) => (
                     <TableRow key={student.id}>
+                      <TableCell>
+                        {student.admitCardNumber}
+                      </TableCell>
                       <TableCell className="font-mono text-xs">
-                        {student.enrollmentId}
+                        {student.studentName}
                       </TableCell>
                       <TableCell className="font-medium">
-                        {student.fullName}
+                        {student.examPlace}
                       </TableCell>
                       <TableCell>
-                        {student.courses.join(", ") || "—"}
+                        {"1234567890"}
                       </TableCell>
-                      <TableCell>{student.mobileNumber}</TableCell>
+                      <TableCell>{student.examTime}</TableCell>
                       <TableCell>
-                        <Badge
-                          variant={
-                            student.status === "ACTIVE"
-                              ? "default"
-                              : student.status === "COMPLETED"
-                                ? "secondary"
-                                : "destructive"
-                          }
-                        >
-                          {student.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {new Date(student.admissionDate).toLocaleDateString()}
+                       {student.examDate}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="inline-flex gap-2">
                           <Button
                             size="icon"
                             variant="outline"
-                            onClick={() => openDetails(student.id)}
+                            onClick={() => openDetails(student.studentId)}
                             title="View"
                           >
                             <Eye className="h-4 w-4" />
@@ -351,7 +315,7 @@ const Students = () => {
                             variant="destructive"
                             disabled={deletingId === student.id}
                             onClick={() =>
-                              handleDelete(student.id, student.fullName)
+                              handleDelete(student.id, student.studentName)
                             }
                             title="Delete"
                           >
@@ -422,22 +386,6 @@ const Students = () => {
             </Button>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardContent className="p-6 text-center">
-            <GraduationCap className="mx-auto h-10 w-10 text-green-600" />
-            <h3 className="mt-4 font-semibold">Course Allocation</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Manage student course enrollments.
-            </p>
-            <Button
-              className="mt-5 w-full"
-              onClick={() => setStatusFilter("ALL")}
-            >
-              Manage
-            </Button>
-          </CardContent>
-        </Card>
       </div>
 
       <ViewStudentDialog
@@ -451,11 +399,11 @@ const Students = () => {
         onOpenChange={setEditOpen}
         onSaved={refreshAfterChange}
       />
-      {/* <NewStudentDialog
+      <GenerateAdmintCard
         open={newOpen}
         onOpenChange={setNewOpen}
         onCreated={refreshAfterChange}
-      /> */}
+      />
     </section>
   );
 };

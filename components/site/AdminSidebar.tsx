@@ -20,25 +20,24 @@ import {
   Plus,
   Check,
   X,
+  File,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { logoutApi } from "@/api/apilist";
 import { clearAuth } from "@/store/authSlice";
 import { useAppDispatch } from "@/TypeTs/reduxHooks";
-import { Button } from "../ui/button";
 const nav = [
   { icon: LayoutDashboard, label: "Dashboard", link: "/admin/dashboard" },
   { icon: Users, label: "Students", link: "/admin/students" },
   { icon: GraduationCap, label: "Admissions", link: "/admin/admissions" },
   { icon: BookOpen, label: "Courses", link: "/admin/courses" },
-  { icon: Users, label: "Faculty", link: "/admin/faculity" },
   { icon: ImageIcon, label: "Gallery", link: "/admin/gallery" },
+  { icon: File, label: "Admit Card", link: "/admin/admitcard" },
   { icon: FileBadge, label: "Certificates", link: "/admin/certificates" },
   { icon: Wallet, label: "Fees", link: "/admin/fees" },
   { icon: Bell, label: "Notifications", link: "/admin/notifications" },
 ];
 const AdminSidebar = () => {
-  const [active, setActive] = useState("Dashboard");
   //   Last path
   const path = usePathname().split("/")[2];
 

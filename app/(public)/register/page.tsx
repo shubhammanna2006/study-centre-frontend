@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CoursesInputData } from "@/interfaces/interface";
 
 const schema = z.object({
   fullName: z.string().trim().min(2).max(80),
@@ -60,11 +61,30 @@ export default function RegisterPage() {
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState("");
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [courses, setCourses] = useState<CoursesInputData[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        setLoading(true);
 
+        const res = await api.get("/api/v1/courses/form-course-info");
+
+        setCourses(res.data);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load courses");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, []);
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    
+
     setFormData(fd);
     const raw = Object.fromEntries(fd);
     const parsed = schema.safeParse(raw);
@@ -201,7 +221,7 @@ export default function RegisterPage() {
                     </SelectTrigger>
                     <SelectContent>
                       {courses.map((c) => (
-                        <SelectItem key={c.slug} value={c.slug}>
+                        <SelectItem key={c.id} value={c.id}>
                           {c.title}
                         </SelectItem>
                       ))}

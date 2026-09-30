@@ -121,3 +121,129 @@ export interface PagedResult<T> {
   totalElements: number;
   totalPages: number;
 }
+
+export interface CoursesInputData{
+  id:string;
+  title:string
+}
+ export interface CourseShortInfo{
+  id:string;
+  slug:string;
+  title:string;
+  shortDesc:string;
+  duration:string;
+  fees:number;
+  active:boolean;
+ }
+
+export interface GalleryImage {
+  id: string;
+  imageUrl: string;
+  title: string;
+  category: string;
+}
+ 
+
+export type StudentStatus = "ACTIVE" | "INACTIVE" | "COMPLETED";
+
+export interface StudentSummary {
+  id: string;
+  enrollmentId: string;
+  fullName: string;
+  mobileNumber: string;
+  courses: string[];
+  status: StudentStatus;
+  admissionDate: string; // ISO date
+}
+
+export interface CourseEnrollmentInfo {
+  enrollmentId: string;
+  courseId: string;
+  courseTitle: string;
+  enrolledDate: string;
+  enrollmentStatus: "ACTIVE" | "COMPLETED" | "DROPPED";
+}
+
+export interface StudentDetail {
+  id: string;
+  enrollmentId: string;
+  fullName: string;
+  fatherName: string;
+  motherName: string;
+  dateOfBirth: string;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  mobileNumber: string;
+  email: string;
+  aadhaarNumber: string;
+  address: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  qualification: string;
+  admissionDate: string;
+  status: StudentStatus;
+  courses: string[];
+  profilePhotoUrl: string;
+  aadhaarCardUrl: string;
+  signatureUrl: string;
+}
+
+export interface StudentStats {
+  total: number;
+  active: number;
+  completed: number;
+  inactive: number;
+}
+
+export interface UpdateStudentPayload {
+  fullName: string;
+  mobileNumber: string;
+  email: string;
+  address: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  qualification: string;
+  status: StudentStatus;
+}
+
+export interface CreateStudentPayload {
+  fullName: string;
+  fatherName: string;
+  motherName: string;
+  dateOfBirth: string;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  mobileNumber: string;
+  email: string;
+  aadhaarNumber: string;
+  address: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  qualification: string;
+  admissionDate: string;
+  courseIds: string[];
+}
+
+export interface CourseOption {
+  id: string;
+  title: string;
+}
+
+export interface PagedResult<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface AdmitCardSummary {
+  id: string;
+  admitCardNumber: string;
+  studentId:string;
+  studentName: string;
+  examPlace: string;
+  examTime: string;
+  examDate: string;
+}

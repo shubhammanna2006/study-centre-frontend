@@ -1,59 +1,130 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { courses } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, IndianRupee, GraduationCap, CheckCircle2, ArrowLeft } from "lucide-react";
+import {
+  Clock,
+  IndianRupee,
+  GraduationCap,
+  CheckCircle2,
+  ArrowLeft,
+  Laptop,
+} from "lucide-react";
 import { DownloadBrochureButton } from "@/components/site/DownloadBrochureButton";
+import api from "@/api/api";
 
-type Params = { slug: string };
+type Params = {
+  slug: string;
+};
 
-function getCourse(slug: string) {
-  return courses.find((c) => c.slug === slug);
+interface CourseDetail {
+  id: string;
+  title: string;
+  slug: string;
+  shortDesc: string;
+  duration: string;
+  fees: number;
+  eligibility: string;
+  syllabus: string[];
+  benefits: string[];
+  active: boolean;
 }
 
-export function generateStaticParams() {
-  return courses.map((c) => ({ slug: c.slug }));
+async function getCourse(slug: string): Promise<CourseDetail | null> {
+  try {
+    const res = await api.get<CourseDetail>(`/api/v1/courses/${slug}`);
+
+    return res.data;
+  } catch (error) {
+    console.error("Failed to fetch course:", error);
+
+    return null;
+  }
 }
 
-export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const course = getCourse(slug);
-  if (!course) return {};
+
+  const course = await getCourse(slug);
+
+  if (!course) {
+    return {
+      title: "Course Not Found",
+    };
+  }
+
   return {
     title: `${course.title} — Study Centre`,
-    description: course.short,
+    description: course.shortDesc,
   };
 }
 
-export default async function CourseDetail({ params }: { params: Promise<Params> }) {
+export default async function CourseDetailPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
   const { slug } = await params;
-  const course = getCourse(slug);
-  if (!course) notFound();
 
-  const Icon = course.icon;
+  const course = await getCourse(slug);
+
+  if (!course) {
+    notFound();
+  }
+
+  const Icon = Laptop;
 
   return (
     <div>
-      <section className={`${course.color === "orange" ? "gradient-accent" : "gradient-hero"} text-white`}>
+      {/* HERO */}
+
+      <section className="gradient-hero text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-14">
-          <Link href="/courses" className="inline-flex items-center gap-1 text-sm text-white/80 hover:text-white">
-            <ArrowLeft className="h-4 w-4" /> All courses
+          <Link
+            href="/courses"
+            className="inline-flex items-center gap-1 text-sm text-white/80 hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            All courses
           </Link>
+
           <div className="mt-4 grid gap-8 md:grid-cols-[auto_1fr] items-center">
             <div className="grid h-24 w-24 place-items-center rounded-3xl bg-white/15 backdrop-blur">
               <Icon className="h-10 w-10" />
             </div>
+
             <div>
-              <Badge className="bg-white/15 text-white border-white/25">Course</Badge>
-              <h1 className="mt-2 font-display text-3xl md:text-4xl font-extrabold">{course.title}</h1>
-              <p className="mt-2 text-white/85 max-w-2xl">{course.short}</p>
+              <Badge className="bg-white/15 text-white border-white/25">
+                Course
+              </Badge>
+
+              <h1 className="mt-2 font-display text-3xl md:text-4xl font-extrabold">
+                {course.title}
+              </h1>
+
+              <p className="mt-2 text-white/85 max-w-2xl">{course.shortDesc}</p>
+
               <div className="mt-4 flex flex-wrap gap-4 text-sm">
-                <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4" />{course.duration}</span>
-                <span className="inline-flex items-center gap-1"><IndianRupee className="h-4 w-4" />{course.fees.toLocaleString("en-IN")}</span>
-                <span className="inline-flex items-center gap-1"><GraduationCap className="h-4 w-4" />{course.eligibility}</span>
+                <span className="inline-flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  {course.duration}
+                </span>
+
+                <span className="inline-flex items-center gap-1">
+                  <IndianRupee className="h-4 w-4" />
+                  {course.fees.toLocaleString("en-IN")}
+                </span>
+
+                <span className="inline-flex items-center gap-1">
+                  <GraduationCap className="h-4 w-4" />
+                  {course.eligibility}
+                </span>
               </div>
             </div>
           </div>
@@ -65,10 +136,13 @@ export default async function CourseDetail({ params }: { params: Promise<Params>
           <Card>
             <CardContent className="p-6">
               <h2 className="font-display text-xl font-bold">Syllabus</h2>
+
               <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                {course.syllabus.map((s: string) => (
-                  <li key={s} className="flex items-start gap-2 text-sm">
-                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-primary shrink-0" /> {s}
+                {course.syllabus.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-primary shrink-0" />
+
+                    {item}
                   </li>
                 ))}
               </ul>
@@ -78,10 +152,13 @@ export default async function CourseDetail({ params }: { params: Promise<Params>
           <Card>
             <CardContent className="p-6">
               <h2 className="font-display text-xl font-bold">Benefits</h2>
+
               <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                {course.benefits.map((b: string) => (
-                  <li key={b} className="flex items-start gap-2 text-sm">
-                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-accent shrink-0" /> {b}
+                {course.benefits.map((benefit) => (
+                  <li key={benefit} className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-accent shrink-0" />
+
+                    {benefit}
                   </li>
                 ))}
               </ul>
@@ -93,19 +170,42 @@ export default async function CourseDetail({ params }: { params: Promise<Params>
           <Card className="shadow-elegant border-primary/20">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground">Course Fees</div>
-              <div className="text-3xl font-display font-extrabold text-gradient">₹{course.fees.toLocaleString("en-IN")}</div>
-              <div className="text-xs text-muted-foreground">Installments available</div>
+
+              <div className="text-3xl font-display font-extrabold text-gradient">
+                ₹{course.fees.toLocaleString("en-IN")}
+              </div>
+
+              <div className="text-xs text-muted-foreground">
+                Installments available
+              </div>
+
               <div className="mt-5 space-y-2">
-                <Link href="/register"><Button className="w-full gradient-primary text-primary-foreground border-0 hover:opacity-90">Register Now</Button></Link>
+                <Link href="/register">
+                  <Button className="w-full gradient-primary text-primary-foreground border-0 hover:opacity-90 mb-2">
+                    Register Now
+                  </Button>
+                </Link>
+
                 <DownloadBrochureButton />
               </div>
             </CardContent>
           </Card>
+
           <Card>
             <CardContent className="p-6">
-              <div className="font-display font-semibold">Need help choosing?</div>
-              <p className="text-sm text-muted-foreground mt-1">Talk to our counsellor for free career guidance.</p>
-              <Link href="/contact"><Button variant="outline" className="mt-3 w-full">Contact Counsellor</Button></Link>
+              <div className="font-display font-semibold">
+                Need help choosing?
+              </div>
+
+              <p className="text-sm text-muted-foreground mt-1">
+                Talk to our counsellor for free career guidance.
+              </p>
+
+              <Link href="/contact">
+                <Button variant="outline" className="mt-3 w-full">
+                  Contact Counsellor
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </aside>

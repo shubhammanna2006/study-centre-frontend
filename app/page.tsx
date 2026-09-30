@@ -11,6 +11,10 @@ import {
   ArrowRight, Sparkles, Users, Award, GraduationCap, Building2, Wallet, ShieldCheck,
   Briefcase, MonitorPlay, Quote, CalendarDays, Star,
 } from "lucide-react";
+import HeroSection from "@/components/home/HeroSection";
+import AchievementSection from "@/components/home/AchievementSection";
+import WhyUsSection from "@/components/home/WhyUsSection";
+import CourseSection from "@/components/home/CourseSection";
 
 export const metadata: Metadata = {
   title: "Study Centre — Computer Coaching Institute | Learn Today, Lead Tomorrow",
@@ -32,79 +36,10 @@ export default function Home() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-hero opacity-95" />
-        <img src="/assets/pattern-tech.jpg" alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-15 mix-blend-overlay" />
-        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-white/10 blur-3xl animate-float" />
-        <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-accent/40 blur-3xl animate-float" style={{ animationDelay: "1.5s" }} />
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-24 pb-24 md:pt-32 md:pb-32 grid gap-12 lg:grid-cols-2 items-center">
-          <div className="text-white animate-fade-up">
-            <Badge className="bg-white/15 text-white border-white/25 backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5 mr-1" /> Admissions Open — Batch of 2026
-            </Badge>
-            <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05]">
-              Learn Today,<br />
-              <span className="bg-linear-to-r from-orange-300 to-amber-200 bg-clip-text text-transparent">Lead Tomorrow.</span>
-            </h1>
-            <p className="mt-5 text-lg text-white/85 max-w-xl">
-              Government-recognized computer courses with real-world labs, expert faculty and placement assistance. Build the career you deserve at <strong className="text-white">Study Centre</strong>.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/register">
-                <Button size="lg" className="gradient-accent text-accent-foreground border-0 hover:opacity-90 shadow-accent">
-                  Join Now <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/courses">
-                <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary">
-                  Explore Courses
-                </Button>
-              </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-white/80">
-              <div className="flex items-center gap-2"><Users className="h-4 w-4" /> 5,200+ students trained</div>
-              <div className="flex items-center gap-2"><Award className="h-4 w-4" /> 18 years of excellence</div>
-              <div className="flex items-center gap-2"><Star className="h-4 w-4 fill-amber-300 text-amber-300" /> 4.9 rating</div>
-            </div>
-          </div>
-
-          <div className="relative animate-fade-up" style={{ animationDelay: "0.15s" }}>
-            <div className="absolute -inset-4 rounded-3xl gradient-accent opacity-30 blur-2xl" />
-            <div className="relative overflow-hidden rounded-3xl border border-white/20 shadow-2xl">
-              <img src="/assets/hero-classroom.jpg" alt="Students learning at Study Centre computer lab" width={1600} height={1000} className="w-full h-auto" />
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-card text-card-foreground rounded-2xl p-4 shadow-elegant flex items-center gap-3 border border-border">
-              <div className="grid h-11 w-11 place-items-center rounded-xl gradient-primary text-primary-foreground"><Award className="h-5 w-5" /></div>
-              <div>
-                <div className="text-xs text-muted-foreground">Certificates Issued</div>
-                <div className="font-bold text-lg"><Counter value={4800} suffix="+" /></div>
-              </div>
-            </div>
-            <div className="absolute -top-4 -right-4 bg-card text-card-foreground rounded-2xl p-4 shadow-accent flex items-center gap-3 border border-border">
-              <div className="grid h-11 w-11 place-items-center rounded-xl gradient-accent text-accent-foreground"><Briefcase className="h-5 w-5" /></div>
-              <div>
-                <div className="text-xs text-muted-foreground">Placements</div>
-                <div className="font-bold text-lg"><Counter value={1350} suffix="+" /></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* STATS STRIP */}
-      <section className="border-y border-border bg-secondary/40">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {achievements.stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-extrabold text-gradient">
-                <Counter value={s.value} suffix={s.suffix} />
-              </div>
-              <div className="text-xs md:text-sm text-muted-foreground mt-1">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AchievementSection />
 
       {/* ABOUT */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-20 grid gap-12 lg:grid-cols-2 items-center">
@@ -147,43 +82,10 @@ export default function Home() {
       </section>
 
       {/* WHY US FULL */}
-      <section className="bg-secondary/40 border-y border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-          <div className="text-center max-w-2xl mx-auto">
-            <Badge variant="secondary">Why Choose Us</Badge>
-            <h2 className="mt-3 font-display text-3xl md:text-4xl font-bold">Everything you need to succeed</h2>
-            <p className="mt-3 text-muted-foreground">Six reasons families across the region trust Study Centre with their careers.</p>
-          </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {whyUs.map((w, i) => (
-              <Card key={w.title} className="hover:shadow-elegant transition-all hover:-translate-y-1">
-                <CardContent className="p-6">
-                  <div className={`grid h-12 w-12 place-items-center rounded-xl mb-4 ${i % 2 ? "gradient-accent text-accent-foreground" : "gradient-primary text-primary-foreground"}`}>
-                    <w.icon className="h-5 w-5" />
-                  </div>
-                  <div className="font-display font-semibold text-lg">{w.title}</div>
-                  <p className="text-sm text-muted-foreground mt-2">{w.text}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <WhyUsSection />
 
       {/* POPULAR COURSES */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-        <div className="flex items-end justify-between gap-4 flex-wrap">
-          <div>
-            <Badge variant="secondary">Courses</Badge>
-            <h2 className="mt-3 font-display text-3xl md:text-4xl font-bold">Popular Courses</h2>
-            <p className="mt-2 text-muted-foreground">Choose from career-focused programs with practical labs and certification.</p>
-          </div>
-          <Link href="/courses"><Button variant="outline">View all courses <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {popular.map((c) => <CourseCard key={c.slug} course={c} />)}
-        </div>
-      </section>
+      <CourseSection />
 
       {/* NEWS */}
       <section className="bg-secondary/40 border-y border-border">
